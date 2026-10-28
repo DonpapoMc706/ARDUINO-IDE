@@ -2,11 +2,10 @@
 int pinLedRojo = 25;
 int pinBotonReset = 54;
 int estadoBotonReset = 1;
-int estadoPinLedRojo = 0;
 int pinLedVerde = 26;
-int estadoPinLedVerde = 0;
 int pinBotonAlarma = 55;
 int estadoBotonAlarma = 1;
+int estadoAlarma = 0;
 void setup () {
 
 
@@ -15,19 +14,28 @@ void setup () {
   Serial.begin(9600);
   pinMode(pinLedVerde, OUTPUT);
   pinMode(pinBotonAlarma, INPUT_PULLUP);
+  digitalWrite(pinLedVerde, HIGH);
 }
 
 void loop () {
  estadoBotonReset = digitalRead(pinBotonReset);
     if (estadoBotonReset == LOW) {
-        estadoPinLedRojo = !estadoPinLedVerde;
-        digitalWrite(pinLedRojo, estadoPinLedVerde);
+        estadoAlarma = 0;
+    }
 estadoBotonAlarma = digitalRead(pinBotonAlarma);
     if (estadoBotonAlarma == LOW) {
-        estadoPinLedVerde = !estadoBotonAlarma;
-        digitalWrite(pinLedRojo, estadoPinLedRojo);
+        estadoAlarma = 1;
     }
+  if (estadoAlarma == 0) {
+    digitalWrite(pinLedVerde, LOW);
+    digitalWrite(pinLedRojo, HIGH);
+    delay(150);
+  } else {
+    digitalWrite(pinLedRojo, LOW);
+    delay(150);
+    digitalWrite(pinLedVerde, HIGH);
 
-    delay(500); // Debounce delay
+    
   }
+  
 }  
